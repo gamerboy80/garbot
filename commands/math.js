@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
 			var scope = JSON.parse(r ?? "{}") ?? {};
 			const results = math.evaluate(args.join(" "), scope);
 			await client.db.query(
-				"insert into scopes (scope, id) values (?, ?) on duplicate key update scope = ?",
+				"insert into scopes (scope, id) values (?, ?) on duplicate key update ?",
 				[
 					JSON.stringify(scope),
 					message.author.id,
