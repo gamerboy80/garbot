@@ -74,46 +74,49 @@ module.exports = async (client, message) => {
 	}
 	// Ignore all bots
 	if (message.author.bot) return;
-	var pr = message.content.split(/ +/);
-	if (pr[0] === "!") {
-		if (Date.now() - ocrcd.get(message.author.id) > 10000) {
-			const msg = message.reply("ok wait");
-			var u;
-			if (pr[1]) {
-				if (s.match(linkRegex)) [, u] = pr;
-			} else {
-				u =
-					message.attachments.first()?.proxyURL ??
-					(
-						await client.db.query("select link from last_images where id = ?", [
-							message.channel.id,
-						])
-					)[0]?.link;
-			}
-			if (u) {
-				axios
-					.get(
-						"https://api.ocr.space/parse/ImageUrl?" +
-							objToURI({
-								url: u,
-								apikey: client.config.apiKeys.ocrSpace,
-							})
-					)
-					.then((resp) => {
-						if (resp.data.OCRExitCode === 1) {
-							var parsedstr = resp.data?.ParsedResults[0]?.ParsedText;
-							var str = parsedstr || "no str :(";
-							msg.then((m) => m.delete());
-							message.reply(str, { split: true });
-						} else {
-							if (resp.data.IsErroredOnProcessing) {
-								message.reply(resp.data.ErrorMessage[1]);
+	if (client.config.apiKeys.ocrSpace) {
+		var pr = message.content.split(/ +/);
+		if (pr[0] === "!") {
+			if (Date.now() - ocrcd.get(message.author.id) > 10000) {
+				const msg = message.reply("ok wait");
+				var u;
+				if (pr[1]) {
+					if (s.match(linkRegex)) [, u] = pr;
+				} else {
+					u =
+						message.attachments.first()?.proxyURL ??
+						(
+							await client.db.query(
+								"select link from last_images where id = ?",
+								[message.channel.id]
+							)
+						)[0]?.link;
+				}
+				if (u) {
+					axios
+						.get(
+							"https://api.ocr.space/parse/ImageUrl?" +
+								objToURI({
+									url: u,
+									apikey: client.config.apiKeys.ocrSpace,
+								})
+						)
+						.then((resp) => {
+							if (resp.data.OCRExitCode === 1) {
+								var parsedstr = resp.data?.ParsedResults[0]?.ParsedText;
+								var str = parsedstr || "no str :(";
+								msg.then((m) => m.delete());
+								message.reply(str, { split: true });
+							} else {
+								if (resp.data.IsErroredOnProcessing) {
+									message.reply(resp.data.ErrorMessage[1]);
+								}
 							}
-						}
-					})
-					.catch(console.error);
-			} else message.reply("unable to find image");
-			ocrcd.set(message.author.id, Date.now());
+						})
+						.catch(console.error);
+				} else message.reply("unable to find image");
+				ocrcd.set(message.author.id, Date.now());
+			}
 		}
 	}
 	if (!message.guild) {
@@ -141,7 +144,7 @@ module.exports = async (client, message) => {
 	if (message.content.match(new RegExp(`^<@!?${client.user.id}>$`)))
 		message.reply({
 			embed: {
-				description: `the prefix for this guild is ${prefix}`,
+				description: `The prefix for this guild is ${prefix}`,
 				color: 0x00ff00,
 			},
 		});
