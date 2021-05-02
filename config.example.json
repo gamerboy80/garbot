@@ -1,0 +1,19 @@
+{
+	"prefix": "",
+	"token": "",
+	"owner": "",
+	"apiKeys": {
+		"ocrSpace": ""
+	},
+	"database": {
+		"host": "localhost",
+		"username": "",
+		"password": "",
+		"database": ""
+	},
+	"guildStats": {
+		"enabled": false,
+		"categoryId": "",
+		"guildId": ""
+	}
+}
