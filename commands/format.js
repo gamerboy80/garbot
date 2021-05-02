@@ -37,6 +37,7 @@ exports.run = async (client, message, args) => {
 			break;
 		case "tp":
 		case "pt":
+			const msg = message.reply("hold on, this may take a while");
 			t.run(
 				client,
 				{
@@ -46,9 +47,7 @@ exports.run = async (client, message, args) => {
 								client,
 								{
 									reply(s) {
-										if (s === "yeah yeah") {
-											message.reply("ok done");
-										}
+										if (s === "yeah yeah") msg.then((m) => m.edit("finished"));
 									},
 								},
 								["t"]
@@ -70,3 +69,9 @@ exports.run = async (client, message, args) => {
 };
 
 exports.owner = true;
+
+exports.help = {
+	description: "Format files",
+	usage: "[prefix]format [p, t, or both at the same time]",
+	example: "[prefix]format pt",
+};

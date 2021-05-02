@@ -6,3 +6,9 @@ exports.run = async (client, message) => {
 };
 
 exports.owner = true;
+
+exports.help = {
+	description: "Exits the bot",
+	usage: "[prefix]exit",
+	example: "[prefix]exit",
+};

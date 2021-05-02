@@ -2,22 +2,26 @@ exports.run = async (client, message, args) => {
 	if (args[0]) {
 		var i = 0;
 		for (const x of args) {
-			var s = utilFileWhen(x);
+			var s = client.utils.getMentionFromId(x);
 			const result = await client.db.query(
 				"delete from blacklist where id = ?",
 				[s]
 			);
 			i += result?.affectedRows ?? 0;
 		}
-		message.reply(`unblacklisted ${i} users`);
+		message.reply({
+			embed: {
+				description: `Unblacklisted ${i} users`,
+				color: 0x00ff00,
+			},
+		});
 	}
 };
 
 exports.owner = true;
 
-function utilFileWhen(str) {
-	if (str.startsWith("<@")) str = str.slice(2);
-	if (str.endsWith(">")) str = str.slice(0, -1);
-	if (str.startsWith("!")) str = str.slice(1);
-	return str;
-}
+exports.help = {
+	description: "Removes user from blacklist",
+	usage: "[prefix]unblacklist [1 or more users to unblacklist]",
+	example: "[prefix]unblacklist @notabusiveuser1 @notabusiveuser2",
+};

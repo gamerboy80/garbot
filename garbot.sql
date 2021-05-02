@@ -24,14 +24,6 @@ CREATE TABLE `blacklist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `eval_enabled`;
-CREATE TABLE `eval_enabled` (
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `id` text NOT NULL,
-  PRIMARY KEY (`id`(20))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
 DROP TABLE IF EXISTS `exit_channel`;
 CREATE TABLE `exit_channel` (
   `id` text NOT NULL
@@ -58,8 +50,9 @@ DROP TABLE IF EXISTS `server_settings`;
 CREATE TABLE `server_settings` (
   `id` text NOT NULL,
   `prefix` text NOT NULL,
+  `eval` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`(20))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 2021-05-02 06:58:57
+-- 2021-05-02 17:39:07

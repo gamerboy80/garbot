@@ -1,6 +1,25 @@
 exports.run = async (client, message) => {
-	await client.db.query("delete from aliases where id = ?", [
+	const result = await client.db.query("delete from aliases where id = ?", [
 		message.author.id,
 	]);
-	message.reply("ok cleared");
+	if (result.rowsAffected)
+		message.reply({
+			embed: {
+				description: "Cleared your aliases",
+				color: 0x00ff00,
+			},
+		});
+	else
+		message.reply({
+			embed: {
+				description: "No aliases to clear",
+				color: 0xffa500,
+			},
+		});
+};
+
+exports.help = {
+	description: "Clears your aliases",
+	usage: "[prefix]clearaliases",
+	example: "[prefix]clearaliases",
 };

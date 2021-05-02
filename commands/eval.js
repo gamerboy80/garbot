@@ -40,26 +40,61 @@ exports.run = async (client, message, args) => {
 			if (result instanceof Promise)
 				result.catch((err) =>
 					message
-						.reply(`rejection: ${err.name}: ${err.message}`)
-						.catch(() => message.channel.send(`${err.name}: ${err.message}`))
+						.reply({
+							embed: {
+								description: `Rejection: ${err.name}: ${err.message}`,
+								color: 0xff0000,
+							},
+						})
+						.catch(() =>
+							message.channel
+								.send({
+									embed: {
+										description: `${err.name}: ${err.message}`,
+										color: 0xff0000,
+									},
+								})
+								.catch(() => {})
+						)
 				);
-			message.reply("result: " + result, { split: true }).catch(() => {});
+			message
+				.reply(
+					{
+						embed: {
+							fields: [{ name: "Result", value: "" + result }],
+							color: 0xff0000,
+						},
+					},
+					{ split: true }
+				)
+				.catch(() => {});
 		} catch (e) {
 			message
 				.reply(`${e.name}: ${e.message}`)
 				.catch(() => message.channel.send(`${e.name}: ${e.message}`));
 		}
 	} else {
-		try {
-			const vm = new VM(vmOpts);
-			vm.sandbox.code = code;
-			vm.run("result = eval(code)");
-			message.reply("result: " + vm.sandbox.result);
-		} catch (e) {
-			// console.error(e);
-			var a = goodTry[e.name];
-			if (a?.includes(e.message)) message.reply("good try :slight_smile:");
-			else message.reply(`${e.name}: ${e.message}`);
+		if (
+			await client.db.query("select eval from server_settings where id = ?", [
+				message.guild.id,
+			])[0]?.eval
+		) {
+			try {
+				const vm = new VM(vmOpts);
+				vm.sandbox.code = code;
+				vm.run("result = eval(code)");
+				message.reply({
+					embed: {
+						fields: [{ name: "Result", value: "" + vm.sandbox.result }],
+						color: 0xff0000,
+					},
+				});
+			} catch (e) {
+				// console.error(e);
+				if (goodTry[e.name]?.includes(e.message))
+					message.reply("good try :slight_smile:");
+				else message.reply(`${e.name}: ${e.message}`);
+			}
 		}
 	}
 };
@@ -70,3 +105,8 @@ function evalInScope(js, contextAsScope) {
 		}
 	}.call(contextAsScope);
 }
+exports.help = {
+	description: "Executes JavaScript code",
+	usage: "[prefix]eval [code]",
+	example: "[prefix]eval ```js\nwhile (false) {\n}\n```",
+};

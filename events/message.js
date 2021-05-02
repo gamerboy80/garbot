@@ -139,7 +139,12 @@ module.exports = async (client, message) => {
 		client.prefixes[message.guild.id] = prefix;
 	}
 	if (message.content.match(new RegExp(`^<@!?${client.user.id}>$`)))
-		message.reply(`the prefix for this guild is ${prefix}`);
+		message.reply({
+			embed: {
+				description: `the prefix for this guild is ${prefix}`,
+				color: 0x00ff00,
+			},
+		});
 	prefix = prefix.toLowerCase();
 
 	// Ignore messages not starting with the prefix (in config.json)

@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
 		);
 		var i = 0;
 		for (const x of args) {
-			var s = utilFileWhen(x);
+			var s = client.utils.getMentionFromId(x);
 			if (s.match(/\d+/) && !b.includes(s)) {
 				i++;
 				await client.db.query(
@@ -14,15 +14,19 @@ exports.run = async (client, message, args) => {
 				);
 			}
 		}
-		message.reply(`blacklisted ${i} users`);
+		message.reply({
+			embed: {
+				description: `Blacklisted ${i} users`,
+				color: 0x00ff00,
+			},
+		});
 	}
 };
 
 exports.owner = true;
 
-function utilFileWhen(str) {
-	if (str.startsWith("<@")) str = str.slice(2);
-	if (str.endsWith(">")) str = str.slice(0, -1);
-	if (str.startsWith("!")) str = str.slice(1);
-	return str;
-}
+exports.help = {
+	description: "Blacklists users",
+	usage: "[prefix]blacklist [1 or more users to blacklist]",
+	example: "[prefix]blacklist @abusiveuser1 @abusiveuser2",
+};

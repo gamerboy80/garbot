@@ -11,11 +11,31 @@ exports.run = async (client, message, args) => {
 					{ id: message.guild.id, prefix: newPrefix },
 				]
 			);
-			message.reply("set prefix to " + args[0]);
-		} else message.reply("put a prefix (no spaces allowed)");
+			message.reply({
+				embed: {
+					description: "Set prefix to " + args[0],
+					color: 0x00ff00,
+				},
+			});
+		} else
+			message.reply({
+				embed: {
+					description: "Please provide a new prefix for this guild",
+					color: 0x00ff00,
+				},
+			});
 	} else {
-		message.reply(
-			`you don't have permission to set the prefix (you need the \`Manage Guild\` permission)`
-		);
+		message.reply({
+			embed: {
+				description: "You don't have the `Manage Guild` permission",
+				color: 0xff0000,
+			},
+		});
 	}
+};
+
+exports.help = {
+	description: "Sets the guild's prefix",
+	usage: "[prefix]setprefix [new prefix]",
+	example: "[prefix]setprefix somethingnew!",
 };

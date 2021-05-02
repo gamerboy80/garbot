@@ -1,6 +1,6 @@
 exports.run = (client, message) => {
 	const start = Date.now();
-	const something = start - (message.id / 4_194_304 + 1_420_070_400_000);
+	const something = start - (message.id / 4194304 + 1420070400000);
 	message.channel
 		.send({
 			embed: {
@@ -15,8 +15,14 @@ exports.run = (client, message) => {
 					title: "Pong!",
 					description: `API: ${Date.now() - start}ms\nWebSocket: ${
 						client.ws.ping
-					}ms\nsomething?: ${Math.round(something)}ms`,
+					}ms\nTime after receiving message: ${Math.round(something)}ms`,
 				},
 			});
 		});
+};
+
+exports.help = {
+	description: "Gets ping of the bot",
+	usage: "[prefix]ping",
+	example: "[prefix]ping",
 };

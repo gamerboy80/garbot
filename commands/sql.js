@@ -13,12 +13,15 @@ exports.run = async (client, message, args) => {
 		result = await client.db.query(str.slice(1));
 		// console.log(result);
 		if (isIterable(result)) {
-			message.reply(
-				suffixwithlimitof2000chars(
-					result.map((a) => JSON.stringify(a)).join(",") || "nothing",
-					" **..truncated**"
-				)
-			);
+			message.reply({
+				embed: {
+					description: suffixwithlimitof2000chars(
+						result.map((a) => JSON.stringify(a)).join(",") || "No results",
+						" ..truncated"
+					),
+					color: 0x00ff00,
+				},
+			});
 		} else
 			message.reply(
 				`**Query OK** (*maybe*), **${result.affectedRows} row${
@@ -35,9 +38,9 @@ exports.run = async (client, message, args) => {
 exports.owner = true;
 
 function suffixwithlimitof2000chars(str, suffix) {
-	if (str.length >= 2000) {
-		var nstr = str.slice(0, 2000).split("");
-		nstr.splice(2000 - suffix.length, suffix.length, suffix);
+	if (str.length >= 2048) {
+		var nstr = str.slice(0, 2048).split("");
+		nstr.splice(2048 - suffix.length, suffix.length, suffix);
 		return nstr.join("");
 	} else return str;
 }
@@ -49,3 +52,9 @@ function isIterable(obj) {
 	}
 	return typeof obj[Symbol.iterator] === "function";
 }
+
+exports.help = {
+	description: "Executes SQL commands",
+	usage: "[prefix]sql [sql query]",
+	example: "[prefix]sql select * from sometable where somecolumn = 'something'",
+};

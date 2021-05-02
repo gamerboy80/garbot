@@ -13,12 +13,16 @@ const config = require("./config.json");
 const eventFunctions = {};
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;
+
 client.prefixes = {};
 client.randomColor = () => Math.floor(Math.random() * 0xffffff);
+client.utils = require("./utils");
+
 client.msglog = fs.createWriteStream("msglog.txt", {
 	flags: "a",
 	encoding: "utf8",
 });
+
 mysql
 	.createConnection({
 		host: client.config.database.host,
@@ -28,6 +32,7 @@ mysql
 		charset: "utf8mb4",
 	})
 	.then((con) => (client.db = con));
+
 client.on("error", (err) => console.error(err));
 
 fs.readdir("./events/", (err, files) => {
@@ -107,7 +112,7 @@ function reloadCommands(path) {
 		delete require.cache[require.resolve(f)];
 		client.commands.delete(commandName);
 		let props = require(f);
-		if (!props.run) throw new Error("why");
+		if (!props.run) throw new Error("no run prop");
 		client.commands.set(commandName.toLowerCase(), props);
 		console.log("reloaded " + path);
 		ct = 0;

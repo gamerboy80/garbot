@@ -1,8 +1,8 @@
-module.exports = (id) => {
-	id.user.setPresence({
+module.exports = (client, id) => {
+	client.user.setPresence({
 		activities: [
 			{
-				name: `${id.config.prefix}help - prefix is ${id.config.prefix}`,
+				name: `${client.config.prefix}help - prefix is ${client.config.prefix}`,
 			},
 		],
 	});

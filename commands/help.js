@@ -1,9 +1,33 @@
+const prefixPrefixRegex = /^\[prefix\]/g;
+
 exports.run = (client, message, args) => {
 	if (args[0]) {
 		const cmd = client.commands.get(args[0]);
 		if (cmd)
-			if (cmd.help) message.reply({ embed: cmd.help });
-			else message.reply("help for that command doesn't exist");
+			if (cmd.help) {
+				const prefix = message.content
+					.toLowerCase()
+					.replace(new RegExp("^(.+)help .+$"), "$1");
+				console.log(prefix);
+				message.reply({
+					embed: {
+						fields: [
+							{
+								name: "Description",
+								value: cmd.help.description.replace(prefixPrefixRegex, prefix),
+							},
+							{
+								name: "Usage",
+								value: cmd.help.usage.replace(prefixPrefixRegex, prefix),
+							},
+							{
+								name: "Example",
+								value: cmd.help.example.replace(prefixPrefixRegex, prefix),
+							},
+						],
+					},
+				});
+			} else message.reply("help for that command doesn't exist");
 		else message.reply("that command doesn't exist");
 	} else {
 		var commands = client.commands.keyArray();
@@ -25,4 +49,10 @@ exports.run = (client, message, args) => {
 			},
 		});
 	}
+};
+
+exports.help = {
+	description: "Lists commands, or gets info of a command",
+	usage: "[prefix]help [command (optional)]",
+	example: "[prefix]help help",
 };

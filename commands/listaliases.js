@@ -5,5 +5,16 @@ exports.run = async (client, message) => {
 	);
 	var astr = "";
 	for (const x of result) astr += `, \`${x.alias}\` -> \`${x.command}\``;
-	message.reply(astr.slice(2) || "no aliases");
+	message.reply({
+		embed: {
+			description: astr.slice(2) || "No aliases",
+			color: 0x00ff00,
+		},
+	});
+};
+
+exports.help = {
+	description: "Lists your aliases",
+	usage: "[prefix]listaliases",
+	example: "[prefix]listaliases",
 };

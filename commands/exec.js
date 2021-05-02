@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
 		var l = "";
 		proc.stdout.on("data", (data) => (l += data?.toString()));
 		proc.on("exit", (c) => {
-			if (s) for (const x of xd(l)) message.reply(x, { split: true });
+			if (s) message.reply(x, { split: true });
 			else message.reply(c);
 		});
 	}
@@ -20,11 +20,8 @@ exports.run = (client, message, args) => {
 
 exports.owner = true;
 
-function xd(str) {
-	var sa = [];
-	while (str) {
-		sa.push(str.slice(0, 2000));
-		str = str.slice(2000);
-	}
-	return sa;
-}
+exports.help = {
+	description: "Executes things in shell",
+	usage: "[prefix]exec [shell command]",
+	example: "[prefix]exec echo hi",
+};

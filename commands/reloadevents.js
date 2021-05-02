@@ -11,8 +11,19 @@ exports.run = async (client, message) => {
 			let [eventName] = file.split(".");
 			client.on(eventName, event.bind(null, client));
 		}
-		message.reply("reloaded events");
+		message.reply({
+			embed: {
+				description: "Reloaded events",
+				color: 0x00ff00,
+			},
+		});
 	});
 };
 
 exports.owner = true;
+
+exports.help = {
+	description: "Reloads all the events",
+	usage: "[prefix]reloadevents",
+	example: "[prefix]reloadevents",
+};

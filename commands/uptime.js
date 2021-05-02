@@ -1,5 +1,10 @@
 exports.run = (client, message) => {
-	message.reply(msToTime(client.uptime));
+	message.reply({
+		embed: {
+			description: msToTime(client.uptime),
+			color: 0x00ff00,
+		},
+	});
 };
 
 // thanks stackoverflow
@@ -13,3 +18,9 @@ function msToTime(ms) {
 	else if (hours < 24) return hours + " Hours";
 	else return days + " Days";
 }
+
+exports.help = {
+	description: "Gets client uptime",
+	usage: "[prefix]uptime",
+	example: "[prefix]uptime",
+};
