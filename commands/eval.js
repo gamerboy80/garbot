@@ -58,15 +58,12 @@ exports.run = async (client, message, args) => {
 						)
 				);
 			message
-				.reply(
-					{
-						embed: {
-							fields: [{ name: "Result", value: "" + result }],
-							color: 0xff0000,
-						},
+				.reply({
+					embed: {
+						fields: [{ name: "Result", value: "" + result }],
+						color: 0xff0000,
 					},
-					{ split: true }
-				)
+				})
 				.catch(() => {});
 		} catch (e) {
 			message
