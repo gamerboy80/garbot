@@ -24,7 +24,7 @@ exports.run = async (client, message, args) => {
 						fields: [
 							{
 								name: `Result${results.entries.length > 1 ? "s" : ""}`,
-								value: results.entries.join(", "),
+								value: results.entries.join(", ") || "No result",
 							},
 						],
 						color: 0x00ff00,
