@@ -15,5 +15,9 @@
 		"enabled": false,
 		"categoryId": "",
 		"guildId": ""
+	},
+	"autoUpdate": {
+		"enabled": true,
+		"interval": 3600000
 	}
 }

@@ -15,15 +15,17 @@ module.exports = async (client) => {
 		await client.channels.resolve(a)?.send("im back");
 		client.db.query("TRUNCATE `exit_channel`");
 	}
-	setInterval(() => {
-		var log = "";
-		const proc = c.exec("git pull");
-		proc.stdout.on("data", (d) => (log += d));
-		proc.on("exit", () => {
-			log = log.slice(log.indexOf(logCutString) + logCutString.length);
-			for (const x of restartList) if (log.includes(x)) process.exit(0);
-		});
-	}, 60 * 60 * 1000);
+	if (client.config.autoUpdate.enabled) {
+		setInterval(() => {
+			var log = "";
+			const proc = c.exec("git pull");
+			proc.stdout.on("data", (d) => (log += d));
+			proc.on("exit", () => {
+				log = log.slice(log.indexOf(logCutString) + logCutString.length);
+				for (const x of restartList) if (log.includes(x)) process.exit(0);
+			});
+		}, client.config.autoUpdate.interval);
+	}
 	if (client.config.guildStats.enabled) {
 		const bot_guild = client.guilds.resolve(client.config.guildStats.guildId);
 		if (bot_guild) {
