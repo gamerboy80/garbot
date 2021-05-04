@@ -4,7 +4,7 @@ exports.run = async (client, message, args) => {
 		for (const x of args) {
 			var s = client.utils.getMentionFromId(x);
 			const result = await client.db.query(
-				"delete from blacklist where id = ?",
+				"DELETE FROM `blacklist` WHERE `id` = ?",
 				[s]
 			);
 			i += result?.affectedRows ?? 0;

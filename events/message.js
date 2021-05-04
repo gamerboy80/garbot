@@ -42,7 +42,7 @@ module.exports = async (client, message) => {
 	)
 		return;
 	if (message.attachments.size > 0) {
-		await client.db.query("replace into last_images set ?", [
+		await client.db.query("REPLACE INTO `last_images` SET ?", [
 			{
 				id: message.channel.id,
 				link: message.attachments.first()?.proxyURL,
@@ -76,47 +76,44 @@ module.exports = async (client, message) => {
 	if (message.author.bot) return;
 	if (client.config.apiKeys.ocrSpace) {
 		var pr = message.content.split(/ +/);
-		if (pr[0] === "!") {
-			if (Date.now() - ocrcd.get(message.author.id) > 10000) {
-				const msg = message.reply("ok wait");
-				var u;
-				if (pr[1]) {
-					if (s.match(linkRegex)) [, u] = pr;
-				} else {
-					u =
-						message.attachments.first()?.proxyURL ??
-						(
-							await client.db.query(
-								"select link from last_images where id = ?",
-								[message.channel.id]
-							)
-						)[0]?.link;
-				}
-				if (u) {
-					axios
-						.get(
-							"https://api.ocr.space/parse/ImageUrl?" +
-								objToURI({
-									url: u,
-									apikey: client.config.apiKeys.ocrSpace,
-								})
-						)
-						.then((resp) => {
-							if (resp.data.OCRExitCode === 1) {
-								var parsedstr = resp.data?.ParsedResults[0]?.ParsedText;
-								var str = parsedstr || "no str :(";
-								msg.then((m) => m.delete());
-								message.reply(str, { split: true });
-							} else {
-								if (resp.data.IsErroredOnProcessing) {
-									message.reply(resp.data.ErrorMessage[1]);
-								}
-							}
-						})
-						.catch(console.error);
-				} else message.reply("unable to find image");
-				ocrcd.set(message.author.id, Date.now());
+		if (pr[0] === "!" && Date.now() - ocrcd.get(message.author.id) > 10000) {
+			const msg = message.reply("ok wait");
+			var u;
+			if (pr[1]) {
+				if (s.match(linkRegex)) [, u] = pr;
+			} else {
+				u =
+					message.attachments.first()?.proxyURL ??
+					(
+						await client.db.query("SELECT `link` FROM `last_images` WHERE `id` = ?", [
+							message.channel.id,
+						])
+					)[0]?.link;
 			}
+			if (u) {
+				axios
+					.get(
+						"https://api.ocr.space/parse/ImageUrl?" +
+							objToURI({
+								url: u,
+								apikey: client.config.apiKeys.ocrSpace,
+							})
+					)
+					.then((resp) => {
+						if (resp.data.OCRExitCode === 1) {
+							var parsedstr = resp.data?.ParsedResults[0]?.ParsedText;
+							var str = parsedstr || "no str :(";
+							msg.then((m) => m.delete());
+							message.reply(str, { split: true });
+						} else {
+							if (resp.data.IsErroredOnProcessing) {
+								message.reply(resp.data.ErrorMessage[1]);
+							}
+						}
+					})
+					.catch(console.error);
+			} else message.reply("unable to find image");
+			ocrcd.set(message.author.id, Date.now());
 		}
 	}
 	if (!message.guild) {
@@ -134,7 +131,7 @@ module.exports = async (client, message) => {
 		prefix = client.prefixes[message.guild.id];
 	else {
 		var guildPrefix = (
-			await client.db.query("select prefix from server_settings where id = ?", [
+			await client.db.query("SELECT `prefix` FROM `server_settings` WHERE `id` = ?", [
 				message.guild.id,
 			])
 		)[0]?.prefix;
@@ -160,7 +157,7 @@ module.exports = async (client, message) => {
 	let nc;
 	if (
 		(nc = (
-			await client.db.query("select command from aliases where alias = ?", [
+			await client.db.query("SELECT `command` FROM `aliases` WHERE `alias` = ?", [
 				command,
 			])
 		)[0]?.command)

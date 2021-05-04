@@ -4,9 +4,9 @@
 module.exports = async (client) => {
 	console.log("ready");
 	let a;
-	if ((a = (await client.db.query("select id from exit_channel"))[0]?.id)) {
+	if ((a = (await client.db.query("SELECT `id` FROM `exit_channel`"))[0]?.id) !=  null) {
 		await client.channels.resolve(a)?.send("im back");
-		client.db.query("truncate exit_channel");
+		client.db.query("TRUNCATE `exit_channel`");
 	}
 	if (client.config.guildStats.enabled) {
 		const bot_guild = client.guilds.resolve(client.config.guildStats.guildId);

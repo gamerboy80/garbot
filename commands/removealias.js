@@ -1,11 +1,11 @@
 exports.run = async (client, message, args) => {
-	const aliases = await client.db.query("select * from aliases where id = ?", [
+	const aliases = await client.db.query("SELECT * FROM `aliases` WHERE `id` = ?", [
 		message.author.id,
 	]);
 	if (args[0]) {
 		const a = aliases.find((a) => a.alias === args[0].toLowerCase());
 		if (a) {
-			await client.db.query("delete from aliases where alias = ?", [
+			await client.db.query("DELETE FROM `aliases` WHERE `alias` = ?", [
 				args[0].toLowerCase(),
 			]);
 			message.reply({

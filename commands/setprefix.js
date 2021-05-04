@@ -4,7 +4,7 @@ exports.run = async (client, message, args) => {
 			var newPrefix = args[0].toLowerCase();
 			client.prefixes[message.guild.id] = newPrefix;
 			await client.db.query(
-				"insert into server_settings (id, prefix) values (?, ?) on duplicate key update ?",
+				"INSERT INTO `server_settings` (id, prefix) VALUES (?, ?) ON DUPLICATE KEY UPDATE ?",
 				[
 					message.guild.id,
 					newPrefix,

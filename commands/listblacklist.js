@@ -1,6 +1,6 @@
 exports.run = async (client, message) => {
 	const b = await client.db.query(
-		"select * from blacklist where blacklisted = 1"
+		"SELECT * FROM `blacklist` WHERE `blacklisted` = 1"
 	);
 	const userListString = b.map((a) => a.id).join(", ");
 	message.reply({

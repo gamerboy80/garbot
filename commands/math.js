@@ -4,14 +4,14 @@ exports.run = async (client, message, args) => {
 	if (args[0]) {
 		try {
 			const r = (
-				await client.db.query("select scope from scopes where id = ?", [
+				await client.db.query("SELECT `scope` FROM `scopes` WHERE `id` = ?", [
 					message.author.id,
 				])
 			)[0]?.scope;
 			var scope = JSON.parse(r ?? "{}") ?? {};
 			const results = math.evaluate(args.join(" "), scope);
 			await client.db.query(
-				"insert into scopes (scope, id) values (?, ?) on duplicate key update ?",
+				"INSERT INTO `scopes` (scope, id) VALUES (?, ?) ON DUPLICATE KEY UPDATE ?",
 				[
 					JSON.stringify(scope),
 					message.author.id,
@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
 					embed: {
 						fields: [
 							{
-								name: `result${results.entries.length > 1 ? "s" : ""}`,
+								name: `Result${results.entries.length > 1 ? "s" : ""}`,
 								value: results.entries.join(", "),
 							},
 						],

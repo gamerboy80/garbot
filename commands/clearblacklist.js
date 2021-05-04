@@ -5,7 +5,7 @@ exports.run = async (client, message) => {
 				description: `Are you sure you want to remove ${
 					(
 						await client.db.query(
-							"select blacklisted from blacklist where blacklisted = 1"
+							"SELECT `blacklisted` FROM `blacklist` WHERE `blacklisted` = 1"
 						)
 					).length
 				} users from the blacklist? (You have 10 minutes to react)`,
@@ -21,7 +21,7 @@ exports.run = async (client, message) => {
 				}
 			);
 			collector.on("collect", async () => {
-				await client.db.query("truncate blacklist");
+				await client.db.query("TRUNCATE `blacklist`");
 				m.edit({
 					embed: {
 						description: "Cleared blacklist",

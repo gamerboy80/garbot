@@ -5,28 +5,33 @@ exports.run = (client, message, args) => {
 		const cmd = client.commands.get(args[0]);
 		if (cmd)
 			if (cmd.help) {
-				const prefix = message.content
-					.toLowerCase()
-					.replace(new RegExp("^(.+)help .+$"), "$1");
-				console.log(prefix);
-				message.reply({
-					embed: {
-						fields: [
-							{
-								name: "Description",
-								value: cmd.help.description.replace(prefixPrefixRegex, prefix),
-							},
-							{
-								name: "Usage",
-								value: cmd.help.usage.replace(prefixPrefixRegex, prefix),
-							},
-							{
-								name: "Example",
-								value: cmd.help.example.replace(prefixPrefixRegex, prefix),
-							},
-						],
-					},
-				});
+				if (cmd.owner && message.author.id !== client.config.owner) {
+					const prefix = message.content
+						.toLowerCase()
+						.replace(new RegExp("^(.+)help .+$"), "$1");
+					console.log(prefix);
+					message.reply({
+						embed: {
+							fields: [
+								{
+									name: "Description",
+									value: cmd.help.description.replace(
+										prefixPrefixRegex,
+										prefix
+									),
+								},
+								{
+									name: "Usage",
+									value: cmd.help.usage.replace(prefixPrefixRegex, prefix),
+								},
+								{
+									name: "Example",
+									value: cmd.help.example.replace(prefixPrefixRegex, prefix),
+								},
+							],
+						},
+					});
+				}
 			} else message.reply("help for that command doesn't exist");
 		else message.reply("that command doesn't exist");
 	} else {

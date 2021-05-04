@@ -7,11 +7,10 @@ const fs = require("fs");
 const client = new Discord.Client({
 	ws: { properties: { $browser: "Discord iOS" } },
 	intents: Discord.Intents.ALL,
-	partials: ["USER", "CHANNEL", "GUILD_MEMBER", "MESSAGE", "REACTION"],
+	partials: ["USER", "CHANNEL", "GUILD_MEMBER", "MESSAGE", "REACTION"], // :sleeping:
 });
 const config = require("./config.json");
 const eventFunctions = {};
-// We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;
 
 client.prefixes = {};
@@ -82,8 +81,8 @@ function thePain(n) {
 	if (client.db) {
 		if (aq.length)
 			for (const x of aq)
-				client.db.query("delete from aliases where alias = ?", [x]);
-		client.db.query("delete from aliases where alias = ?", [n]);
+				client.db.query("DELETE FROM `aliases` WHERE `alias` = ?", [x]);
+		client.db.query("DELETE FROM `aliases` WHERE `alias` = ?", [n]);
 	} else aq.push(n);
 }
 

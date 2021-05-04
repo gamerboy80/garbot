@@ -1,8 +1,8 @@
 exports.run = async (client, message, args) => {
-	const aliases = await client.db.query("select * from ?? where id = ?", [
-		"aliases",
-		message.author.id,
-	]);
+	const aliases = await client.db.query(
+		"SELECT * FROM `aliases` WHERE `id` = ?",
+		[message.author.id]
+	);
 	if (args[1]) {
 		const aliasLowerCase = args[0].toLowerCase();
 		const commandLowerCase = args[1].toLowerCase();
@@ -19,8 +19,8 @@ exports.run = async (client, message, args) => {
 			if (cmd) {
 				if (!thisShouldntExist) {
 					await client.db.query(
-						"insert into ?? (id, alias, command) values (?, ?, ?)",
-						["aliases", message.author.id, aliasLowerCase, commandLowerCase]
+						"INSERT INTO `aliases` (id, alias, command) VALUES (?, ?, ?)",
+						[ message.author.id, aliasLowerCase, commandLowerCase]
 					);
 					message.reply({
 						embed: {

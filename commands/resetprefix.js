@@ -2,7 +2,7 @@ exports.run = (client, message) => {
 	if (message.member.permissions.has("MANAGE_GUILD")) {
 		client.prefixes[message.guild.id] = client.config.prefix;
 		client.db.query(
-			"insert into server_settings (id, prefix) values (?, ?) on duplicate key update ?",
+			"INSERT INTO `server_settings` (id, prefix) VALUES (?, ?) ON DUPLICATE KEY UPDATE ?",
 			[
 				message.guild.id,
 				client.config.prefix,

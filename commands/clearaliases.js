@@ -1,5 +1,5 @@
 exports.run = async (client, message) => {
-	const result = await client.db.query("delete from aliases where id = ?", [
+	const result = await client.db.query("DELETE FROM `aliases` WHERE `id` = ?", [
 		message.author.id,
 	]);
 	if (result.rowsAffected)

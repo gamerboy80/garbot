@@ -72,9 +72,10 @@ exports.run = async (client, message, args) => {
 		}
 	} else {
 		if (
-			await client.db.query("select eval from server_settings where id = ?", [
-				message.guild.id,
-			])[0]?.eval
+			await client.db.query(
+				"SELECT `eval` FROM `server_settings` WHERE `id` = ?",
+				[message.guild.id]
+			)[0]?.eval
 		) {
 			try {
 				const vm = new VM(vmOpts);

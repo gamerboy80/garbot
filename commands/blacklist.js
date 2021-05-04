@@ -1,6 +1,6 @@
 exports.run = async (client, message, args) => {
 	if (args[0]) {
-		const b = (await client.db.query("select * from blacklist")).map(
+		const b = (await client.db.query("SELECT * FROM `blacklist`")).map(
 			(a) => a.id
 		);
 		var i = 0;
@@ -9,7 +9,7 @@ exports.run = async (client, message, args) => {
 			if (s.match(/\d+/) && !b.includes(s)) {
 				i++;
 				await client.db.query(
-					"insert into blacklist (blacklisted, id) values (1, ?)",
+					"INSERT INTO `blacklist` (blacklisted, id) VALUES (1, ?)",
 					[s]
 				);
 			}

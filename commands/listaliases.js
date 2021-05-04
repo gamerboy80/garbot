@@ -1,6 +1,6 @@
 exports.run = async (client, message) => {
 	const result = await client.db.query(
-		"select alias, command from aliases where id = ?",
+		"SELECT `alias`, `command` FROM `aliases` WHERE `id` = ?",
 		[message.author.id]
 	);
 	var astr = "";
