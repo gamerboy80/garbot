@@ -1,9 +1,10 @@
 exports.run = async (client, message) => {
 	if (message.member.permissions.has("MANAGE_SERVER")) {
 		const currentState = (
-			await client.db.query("SELECT `eval` FROM `server_settings` WHERE `id` = ?", [
-				message.guild.id,
-			])
+			await client.db.query(
+				"SELECT `eval` FROM `server_settings` WHERE `id` = ?",
+				[message.guild.id]
+			)
 		)[0]?.eval;
 		if (currentState == null) currentState = true;
 		await client.db.query(

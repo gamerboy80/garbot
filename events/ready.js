@@ -4,7 +4,10 @@
 module.exports = async (client) => {
 	console.log("ready");
 	let a;
-	if ((a = (await client.db.query("SELECT `id` FROM `exit_channel`"))[0]?.id) !=  null) {
+	if (
+		(a = (await client.db.query("SELECT `id` FROM `exit_channel`"))[0]?.id) !=
+		null
+	) {
 		await client.channels.resolve(a)?.send("im back");
 		client.db.query("TRUNCATE `exit_channel`");
 	}

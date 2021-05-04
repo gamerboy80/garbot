@@ -1,4 +1,4 @@
-module.exports = (client/*, id*/) => {
+module.exports = (client /*, id*/) => {
 	client.user.setPresence({
 		activities: [
 			{

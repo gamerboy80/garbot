@@ -85,9 +85,10 @@ module.exports = async (client, message) => {
 				u =
 					message.attachments.first()?.proxyURL ??
 					(
-						await client.db.query("SELECT `link` FROM `last_images` WHERE `id` = ?", [
-							message.channel.id,
-						])
+						await client.db.query(
+							"SELECT `link` FROM `last_images` WHERE `id` = ?",
+							[message.channel.id]
+						)
 					)[0]?.link;
 			}
 			if (u) {
@@ -131,9 +132,10 @@ module.exports = async (client, message) => {
 		prefix = client.prefixes[message.guild.id];
 	else {
 		var guildPrefix = (
-			await client.db.query("SELECT `prefix` FROM `server_settings` WHERE `id` = ?", [
-				message.guild.id,
-			])
+			await client.db.query(
+				"SELECT `prefix` FROM `server_settings` WHERE `id` = ?",
+				[message.guild.id]
+			)
 		)[0]?.prefix;
 		if (guildPrefix) prefix = guildPrefix;
 		client.prefixes[message.guild.id] = prefix;
@@ -157,9 +159,10 @@ module.exports = async (client, message) => {
 	let nc;
 	if (
 		(nc = (
-			await client.db.query("SELECT `command` FROM `aliases` WHERE `alias` = ?", [
-				command,
-			])
+			await client.db.query(
+				"SELECT `command` FROM `aliases` WHERE `alias` = ?",
+				[command]
+			)
 		)[0]?.command)
 	)
 		command = nc;

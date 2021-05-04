@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
 				if (!thisShouldntExist) {
 					await client.db.query(
 						"INSERT INTO `aliases` (id, alias, command) VALUES (?, ?, ?)",
-						[ message.author.id, aliasLowerCase, commandLowerCase]
+						[message.author.id, aliasLowerCase, commandLowerCase]
 					);
 					message.reply({
 						embed: {

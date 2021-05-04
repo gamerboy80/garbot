@@ -1,6 +1,5 @@
 exports.run = async (client, message, args) => {
 	if (message.member.permissions.has("BAN_MEMBERS")) {
-
 	} else
 		message.reply({
 			embed: {

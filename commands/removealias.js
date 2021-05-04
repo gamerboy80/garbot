@@ -1,7 +1,8 @@
 exports.run = async (client, message, args) => {
-	const aliases = await client.db.query("SELECT * FROM `aliases` WHERE `id` = ?", [
-		message.author.id,
-	]);
+	const aliases = await client.db.query(
+		"SELECT * FROM `aliases` WHERE `id` = ?",
+		[message.author.id]
+	);
 	if (args[0]) {
 		const a = aliases.find((a) => a.alias === args[0].toLowerCase());
 		if (a) {
