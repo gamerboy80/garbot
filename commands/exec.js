@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
 		var l = "";
 		proc.stdout.on("data", (data) => (l += data?.toString()));
 		proc.on("exit", (c) => {
-			if (s) message.reply(x, { split: true });
+			if (s) message.reply(l, { split: true });
 			else message.reply(c);
 		});
 	}
