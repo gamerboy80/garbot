@@ -8,6 +8,7 @@ exports.run = async (client, message, args) => {
 			m.author.id === client.config.owner &&
 			!m.content.startsWith("!")
 		) {
+			messages.push(m.id);
 			if (m.content.startsWith("$"))
 				proc.kill(m.content.slice(1).toUpperCase());
 			else proc.stdin.write(m.content + "\n");
