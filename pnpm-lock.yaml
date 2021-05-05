@@ -5,7 +5,7 @@ specifiers:
   chokidar: ^3.5.1
   discord.js: github:discordjs/discord.js#master
   enmap: ^5.8.5
-  fuzzyset.js: ^1.0.6
+  fuzzyset: ^1.0.6
   lodash: ^4.17.21
   mathjs: ^9.3.2
   nodemon: ^2.0.7
@@ -19,7 +19,7 @@ dependencies:
   chokidar: 3.5.1
   discord.js: github.com/discordjs/discord.js/af00ec8970e77ea8a0afd21571eeeef9c554e1ec
   enmap: 5.8.5
-  fuzzyset.js: 1.0.6
+  fuzzyset: 1.0.6
   lodash: 4.17.21
   mathjs: 9.3.2
   promise-mysql: 5.0.3
@@ -480,8 +480,8 @@ packages:
     os: [darwin]
     optional: true
 
-  /fuzzyset.js/1.0.6:
-    resolution: {integrity: sha512-M16E9/d3Ogiy6XEWQ1CbTCqbULcNaEIg3Qxs0VKhdDSjH3kAskWBZKGyTFb6tPF9FfwSBDcrIjsMQ7R62dNOYw==}
+  /fuzzyset/1.0.6:
+    resolution: {integrity: sha512-8zpynKcEvO6wtLf9XOcjutYAUDgd3kgUf4h9LMNjd9UaOSsYHeuk+W6jWKPjEd5pGnA/LYCUpNph9w3jr0fQeg==}
     engines: {node: '>= 0.4.0'}
     dev: false
 
