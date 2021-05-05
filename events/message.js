@@ -2,6 +2,7 @@ const m = new Map();
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
+const similar = require("fuzzyset.js");
 const linkRegex = /^https?:\/\/(www\.)?[\w#%\+.:=@~-]{1,256}\.[\d()A-Za-z]{1,6}\b([\w#%&()\+./:=?@~-]*)$/;
 if (!fs.existsSync("savedAttachments")) fs.mkdirSync("savedAttachments");
 
@@ -171,7 +172,15 @@ module.exports = async (client, message) => {
 	const cmd = client.commands.get(command);
 
 	// If that command doesn't exist, silently exit and do nothing
-	if (!cmd) return;
+	if (!cmd) {
+		const fuzz = similar(
+			client.commands.keyArray().map((a) => a.toLowerCase())
+		);
+		const fuzzed = fuzz.get(command);
+		if (fuzzed)
+			message.reply(`Command not found, did you mean \`${fuzzed[0][1]}\`?`);
+		return;
+	}
 	if (cmd.owner && message.author.id !== client.config.owner) return;
 
 	// Run the command
