@@ -16,15 +16,8 @@ module.exports = async (client) => {
 		client.db.query("TRUNCATE `exit_channel`");
 	}
 	if (client.config.autoUpdate.enabled) {
-		setInterval(() => {
-			var log = "";
-			const proc = c.exec("git pull");
-			proc.stdout.on("data", (d) => (log += d));
-			proc.on("exit", () => {
-				log = log.slice(log.indexOf(logCutString) + logCutString.length);
-				for (const x of restartList) if (log.includes(x)) process.exit(0);
-			});
-		}, client.config.autoUpdate.interval);
+		update();
+		setInterval(update, client.config.autoUpdate.interval);
 	}
 	if (client.config.guildStats.enabled) {
 		const bot_guild = client.guilds.resolve(client.config.guildStats.guildId);
@@ -57,3 +50,13 @@ module.exports = async (client) => {
 		}
 	}
 };
+
+function update() {
+	var log = "";
+	const proc = c.exec("git pull");
+	proc.stdout.on("data", (d) => (log += d));
+	proc.on("exit", () => {
+		log = log.slice(log.indexOf(logCutString) + logCutString.length);
+		for (const x of restartList) if (log.includes(x)) process.exit(0);
+	});
+}

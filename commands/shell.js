@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
 		if (
 			!m.author.bot &&
 			m.channel.id === message.channel.id &&
-			message.author.id === m.author.id &&
+			m.author.id === client.config.owner &&
 			!m.content.startsWith("!")
 		) {
 			if (m.content.startsWith("$"))
