@@ -49,10 +49,10 @@ CREATE TABLE `scopes` (
 DROP TABLE IF EXISTS `server_settings`;
 CREATE TABLE `server_settings` (
   `id` text NOT NULL,
-  `prefix` text NOT NULL,
-  `eval` tinyint(1) NOT NULL,
+  `prefix` text NOT NULL DEFAULT ';',
+  `eval` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`(20))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 2021-05-02 17:39:07
+-- 2021-05-05 17:26:30

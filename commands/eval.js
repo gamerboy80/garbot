@@ -18,7 +18,7 @@ const vmOpts = {
 		Promise: undefined,
 	},
 };
-var incBuiltIn = ["fs", "child_process"];
+var incBuiltIn = ["fs", "child_process", "os", "zlib"];
 var packages = Object.keys(require("../package.json").dependencies).concat(
 	incBuiltIn
 );
@@ -67,7 +67,17 @@ exports.run = async (client, message, args) => {
 				.catch(() => {});
 		} catch (e) {
 			message
-				.reply(`${e.name}: ${e.message}`)
+				.reply({
+					embed: {
+						fields: [
+							{
+								name: e.name,
+								value: e.message,
+							},
+						],
+						color: 0xff0000,
+					},
+				})
 				.catch(() => message.channel.send(`${e.name}: ${e.message}`));
 		}
 	} else {

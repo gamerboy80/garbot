@@ -5,9 +5,10 @@ exports.run = async (client, message, args) => {
 		if (
 			!m.author.bot &&
 			m.channel.id === message.channel.id &&
-			message.author.id === m.author.id &&
+			m.author.id === client.config.owner &&
 			!m.content.startsWith("!")
 		) {
+			messages.push(m.id);
 			if (m.content.startsWith("$"))
 				proc.kill(m.content.slice(1).toUpperCase());
 			else proc.stdin.write(m.content + "\n");
