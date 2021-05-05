@@ -3,6 +3,7 @@
 const c = require("child_process");
 
 const restartList = ["index.js", "utils.js", "ready.js"];
+const installList = ["package.json"];
 const logCutString = "Fast-forward";
 
 module.exports = async (client) => {
@@ -57,6 +58,11 @@ function update() {
 	proc.stdout.on("data", (d) => (log += d));
 	proc.on("exit", () => {
 		log = log.slice(log.indexOf(logCutString) + logCutString.length);
+		for (const x of installList)
+			if (log.includes(x)) {
+				c.execSync("pnpm install --only=prod");
+				break;
+			}
 		for (const x of restartList) if (log.includes(x)) process.exit(0);
 	});
 }
