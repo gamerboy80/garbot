@@ -2,7 +2,7 @@
 // const sending = new enmap();
 const c = require("child_process");
 
-const restartList = ["index.js", "utils.js"];
+const restartList = ["index.js", "utils.js", "ready.js"];
 const logCutString = "Fast-forward";
 
 module.exports = async (client) => {
