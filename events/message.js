@@ -171,7 +171,6 @@ module.exports = async (client, message) => {
 	// Grab the command data from the client.commands Enmap
 	const cmd = client.commands.get(command);
 
-	// If that command doesn't exist, silently exit and do nothing
 	if (!cmd) {
 		const fuzz = fuzzyset(
 			client.commands.keyArray().map((a) => a.toLowerCase())
