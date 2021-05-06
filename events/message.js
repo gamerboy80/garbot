@@ -155,30 +155,28 @@ module.exports = async (client, message) => {
 
 	// Our standard argument/command name definition.
 	const args = message.content.slice(prefix.length).split(/ +/g);
-
 	var command = args.shift().toLowerCase().split("\n")[0].trim();
-	let nc;
-	if (
-		(nc = (
-			await client.db.query(
-				"SELECT `command` FROM `aliases` WHERE `alias` = ?",
-				[command]
-			)
-		)[0]?.command)
-	)
-		command = nc;
 
-	// Grab the command data from the client.commands Enmap
-	const cmd = client.commands.get(command);
-
+	var cmd = client.commands.get(command);
 	if (!cmd) {
-		const fuzz = fuzzyset(
-			client.commands.keyArray().map((a) => a.toLowerCase())
+		let nc;
+		const aliases = await client.db.query(
+			"SELECT `command`, `alias` FROM `aliases`",
+			[command]
 		);
-		const fuzzed = fuzz.get(command);
-		if (fuzzed)
-			message.reply(`Command not found, did you mean \`${fuzzed[0][1]}\`?`);
-		return;
+		if ((nc = aliases.find((a) => a.alias === command)?.command)) {
+			command = nc;
+			cmd = client.commands.get(nc);
+		} else {
+			const fuzz = fuzzyset([
+				...client.commands.keyArray().map((a) => a.toLowerCase()),
+				...aliases.map((a) => a.alias),
+			]);
+			const fuzzed = fuzz.get(command);
+			if (fuzzed)
+				message.reply(`Command not found, did you mean \`${fuzzed[0][1]}\`?`);
+			return;
+		}
 	}
 	if (cmd.owner && message.author.id !== client.config.owner) return;
 
