@@ -18,16 +18,26 @@ exports.run = async (client, message, args) => {
 		else {
 			if (cmd) {
 				if (!thisShouldntExist) {
-					await client.db.query(
-						"INSERT INTO `aliases` (id, alias, command) VALUES (?, ?, ?)",
-						[message.author.id, aliasLowerCase, commandLowerCase]
-					);
-					message.reply({
-						embed: {
-							description: "Added alias",
-							color: 0x00ff00,
-						},
-					});
+					if (aliasLowerCase.match(/^[a-z]*$/)) {
+						await client.db.query(
+							"INSERT INTO `aliases` (id, alias, command) VALUES (?, ?, ?)",
+							[message.author.id, aliasLowerCase, commandLowerCase]
+						);
+						message.reply({
+							embed: {
+								description: "Added alias",
+								color: 0x00ff00,
+							},
+						});
+					} else {
+						message.reply({
+							embed: {
+								description:
+									"Aliasn't :(",
+								color: 0xff0000,
+							},
+						});
+					}
 				} else
 					message.reply({
 						embed: {
