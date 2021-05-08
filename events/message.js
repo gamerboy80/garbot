@@ -118,36 +118,29 @@ module.exports = async (client, message) => {
 			ocrcd.set(message.author.id, Date.now());
 		}
 	}
-	if (!message.guild) {
-		const t = m.get(message.author.id);
-		if (Date.now() - t > 30_000)
-			message.reply(
-				"hello, if you're trying to use a command, you can't in dms sorry"
-			);
-		m.set(message.author.id, Date.now());
-		return;
-	}
 
 	var prefix = client.config.prefix;
-	if (client.prefixes[message.guild.id])
-		prefix = client.prefixes[message.guild.id];
-	else {
-		var guildPrefix = (
-			await client.db.query(
-				"SELECT `prefix` FROM `server_settings` WHERE `id` = ?",
-				[message.guild.id]
-			)
-		)[0]?.prefix;
-		if (guildPrefix) prefix = guildPrefix;
-		client.prefixes[message.guild.id] = prefix;
-	}
-	if (message.content.match(new RegExp(`^<@!?${client.user.id}>$`)))
-		message.reply({
-			embed: {
-				description: `The prefix for this guild is ${prefix}`,
-				color: 0x00ff00,
-			},
-		});
+	if (message.guild) {
+		if (client.prefixes[message.guild.id])
+			prefix = client.prefixes[message.guild.id];
+		else {
+			var guildPrefix = (
+				await client.db.query(
+					"SELECT `prefix` FROM `server_settings` WHERE `id` = ?",
+					[message.guild.id]
+				)
+			)[0]?.prefix;
+			if (guildPrefix) prefix = guildPrefix;
+			client.prefixes[message.guild.id] = prefix;
+		}
+		if (message.content.match(new RegExp(`^<@!?${client.user.id}>$`)))
+			message.reply({
+				embed: {
+					description: `The prefix for this guild is ${prefix}`,
+					color: 0x00ff00,
+				},
+			});
+	} else return; // right now it breaks some things
 	prefix = prefix.toLowerCase();
 
 	// Ignore messages not starting with the prefix (in config.json)
