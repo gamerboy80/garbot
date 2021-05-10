@@ -44,6 +44,7 @@ exports.run = async (client, message, args) => {
 				break;
 		}
 	} catch (e) {
+		message.reply(e?.toString());
 		console.error(e);
 	}
 };
