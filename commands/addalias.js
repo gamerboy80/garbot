@@ -32,8 +32,7 @@ exports.run = async (client, message, args) => {
 					} else {
 						message.reply({
 							embed: {
-								description:
-									"Aliasn't :(",
+								description: "Aliasn't :(",
 								color: 0xff0000,
 							},
 						});

@@ -78,7 +78,7 @@ exports.run = async (client, message, args) => {
 						color: 0xff0000,
 					},
 				})
-				.catch(() => message.channel.send(`${e.name}: ${e.message}`));
+				?.catch(() => message.channel.send(`${e.name}: ${e.message}`));
 		}
 	} else {
 		if (
@@ -102,7 +102,18 @@ exports.run = async (client, message, args) => {
 				// console.error(e);
 				if (goodTry[e.name]?.includes(e.message))
 					message.reply("good try :slight_smile:");
-				else message.reply(`${e.name}: ${e.message}`);
+				else
+					message.reply({
+						embed: {
+							fields: [
+								{
+									name: e.name,
+									value: e.message,
+								},
+							],
+							color: 0xff0000,
+						},
+					});
 			}
 		}
 	}
