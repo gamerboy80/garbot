@@ -12,15 +12,18 @@ const client = new Discord.Client({
 const config = require("./config.json");
 const eventFunctions = {};
 client.config = config;
-
 client.prefixes = {};
 client.randomColor = () => Math.floor(Math.random() * 0xffffff);
 client.utils = require("./utils");
-
 client.msglog = fs.createWriteStream("msglog.txt", {
 	flags: "a",
 	encoding: "utf8",
 });
+client.server = require("./server").init(
+	client,
+	client.config.port,
+	client.config.publicKey
+);
 
 mysql
 	.createConnection({
@@ -29,6 +32,9 @@ mysql
 		password: client.config.database.password,
 		database: client.config.database.database,
 		charset: "utf8mb4",
+		waitForConnections: true,
+		connectTimeout: 10000,
+		queueLimit: 0,
 	})
 	.then((con) => (client.db = con));
 
