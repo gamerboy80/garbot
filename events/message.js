@@ -3,7 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 const fuzzyset = require("fuzzyset");
-const linkRegex = /^https?:\/\/(www\.)?[\w#%\+.:=@~-]{1,256}\.[\d()A-Za-z]{1,6}\b([\w#%&()\+./:=?@~-]*)$/;
+const linkRegex =
+	/^https?:\/\/(www\.)?[\w#%\+.:=@~-]{1,256}\.[\d()A-Za-z]{1,6}\b([\w#%&()\+./:=?@~-]*)$/;
 if (!fs.existsSync("savedAttachments")) fs.mkdirSync("savedAttachments");
 
 const cd = new Map();
@@ -160,7 +161,7 @@ module.exports = async (client, message) => {
 		if ((nc = aliases.find((a) => a.alias === command)?.command)) {
 			command = nc;
 			cmd = client.commands.get(nc);
-		} else {
+		} else if (command.match(/^[a-zA-Z]+/)) {
 			const fuzz = fuzzyset([
 				...client.commands.keyArray().map((a) => a.toLowerCase()),
 				...aliases.map((a) => a.alias),
@@ -169,7 +170,7 @@ module.exports = async (client, message) => {
 			if (fuzzed)
 				message.reply(`Command not found, did you mean \`${fuzzed[0][1]}\`?`);
 			return;
-		}
+		} else return;
 	}
 	if (cmd.owner && message.author.id !== client.config.owner) return;
 
