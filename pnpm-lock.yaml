@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   axios: ^0.21.1
+  body-parser: ^1.19.0
   chokidar: ^3.5.1
   discord.js: github:discordjs/discord.js#master
   enmap: ^5.8.5
@@ -13,12 +14,14 @@ specifiers:
   promise-mysql: ^5.0.3
   recursive-readdir: ^2.2.2
   setimmediate: ^1.0.5
+  tweetnacl: ^1.0.3
   vm2: ^3.9.3
 
 dependencies:
   axios: 0.21.1
+  body-parser: 1.19.0
   chokidar: 3.5.1
-  discord.js: github.com/discordjs/discord.js/0e40f9b86826ba50aa3840807fb86e1bce6b1c3d
+  discord.js: github.com/discordjs/discord.js/c7334363b36c5f7f1c7880fe77a2e9b2eb1a6442
   enmap: 5.8.5
   express: 4.17.1
   fuzzyset: 1.0.6
@@ -27,6 +30,7 @@ dependencies:
   promise-mysql: 5.0.3
   recursive-readdir: 2.2.2
   setimmediate: 1.0.5
+  tweetnacl: 1.0.3
   vm2: 3.9.3
 
 devDependencies:
@@ -1697,8 +1701,8 @@ packages:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: false
 
-  github.com/discordjs/discord.js/0e40f9b86826ba50aa3840807fb86e1bce6b1c3d:
-    resolution: {tarball: https://codeload.github.com/discordjs/discord.js/tar.gz/0e40f9b86826ba50aa3840807fb86e1bce6b1c3d}
+  github.com/discordjs/discord.js/c7334363b36c5f7f1c7880fe77a2e9b2eb1a6442:
+    resolution: {tarball: https://codeload.github.com/discordjs/discord.js/tar.gz/c7334363b36c5f7f1c7880fe77a2e9b2eb1a6442}
     name: discord.js
     version: 12.5.0
     engines: {node: '>=14.0.0'}
