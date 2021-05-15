@@ -36,7 +36,28 @@ mysql
 		connectTimeout: 10000,
 		queueLimit: 0,
 	})
-	.then((con) => (client.db = con));
+	.then((con) => {
+		client.db = con;
+		const qs = fs
+			.readFileSync("./garbot.sql", { encoding: "utf8" })
+			.trim()
+			.replace(/--.*/g, "")
+			.replace(/\n/g, "")
+			.split(/(?<!');(?!')/);
+		for (const x of qs) if (x) con.query(x);
+		handleDisconnect(con);
+	});
+
+function handleDisconnect(cnx) {
+	async function re(err) {
+		if (!err.fatal || !client.db) return;
+		if (err.code !== "PROTOCOL_CONNECTION_LOST") throw err;
+		client.db = await mysql.createConnection(cnx.config);
+		handleDisconnect(client.db);
+		cnx?.off("error", re);
+	}
+	cnx?.on("error", re);
+}
 
 client.on("error", (err) => console.error(err));
 
